@@ -13,7 +13,7 @@ function Modifier() {
   const [name, setName] = useState(produit.nom);
   const [price, setPrice] = useState(produit.prix);
   const [quantite, setQuantite] = useState(produit.qt);
-  const [achat, setAchat] = useState(produit.date_achat);
+  const [achat, setAchat] = useState(produit.date_achat)
   const [fabricant, setFabricant] = useState(produit.fabricant);
   const [expiration, setExpiration] = useState(produit.date_expiration);
   const [categorie, setCategorie] = useState(produit.categorie);
@@ -27,14 +27,18 @@ const navigate=useNavigate()
       prix: price,
       qt: quantite,
       fabricant: fabricant,
-      date_achat: new Date(achat),
-      date_expiration: new Date(expiration),
+      date_achat: `${achat}`,
+      date_expiration: new Date(expiration).toISOString().split('T')[0],
       categorie: categorie,
     };
     dispatch(UpdateUser(newUser));
     navigate("/");
   };
-
+  const handleachat=(e)=>{
+        setAchat(e.target.value)
+        console.log(e.target.value);
+      }
+     
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <Link to="/" className="flex justify-end mr-9">
@@ -91,7 +95,8 @@ const navigate=useNavigate()
             className="w-full sm:w-[250px] ml-3"
             placeholder="Date d'Achat du produit"
             value={achat}
-            onChange={(e) => setAchat(e.target.value)}
+            key={achat}
+            onChange={handleachat}
           />
         </label>
         <label className="input input-bordered flex items-center gap-2">

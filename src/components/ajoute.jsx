@@ -11,13 +11,28 @@ function Ajouter() {
   const [fabriquant, setfabriquant] = useState('');
   const [achat, setAchat] = useState('');
   const [expiration, setExpiration] = useState('');
+  const [description,setdescription]=useState('');
+  const [image,setImageChisie]=useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const total = useSelector(data => data.produits.length);
-  
+  const products = useSelector((data) => data.produits);
+
+  const renderImages = () => {
+    return products.map((product, index) => (
+      <img
+        key={index}
+        src={product.img}
+        alt={product.nom}
+        className="cursor-pointer w-24 h-24 object-cover"
+        onClick={() => setImageChisie(product.img)}
+      />
+    ));
+  };
+
   const Add = () => {      
     const newProduit = { id: total+1, nom: name, prix: price, qt: quantite,fabricant:fabriquant,date_achat:achat,
-      date_expiration:expiration,categorie:categorie};      
+      date_expiration:expiration,categorie:categorie,description:description,img:image};      
     dispatch(AddUser(newProduit));
     navigate('/');
   };
@@ -34,6 +49,16 @@ function Ajouter() {
             placeholder="Daisy"
             value={name}
             onChange={(e) => setNom(e.target.value)}
+          />
+        </label>
+        <label className="input input-bordered flex items-center gap-2">
+          <span className="font-bold text-1xl">Description</span>
+          <input
+            type="text"
+            className="input-field ml-3"
+            placeholder="Daisy"
+            value={description}
+            onChange={(e) => setdescription(e.target.value)}
           />
         </label>
 
@@ -107,6 +132,10 @@ function Ajouter() {
           <option value="Conserves">Conserves</option>
         </select>
         
+        <div className="grid grid-cols-4 gap-4">
+          {renderImages()}
+        </div>
+
         <button
           className="btn btn-info w-full sm:w-auto mx-auto"
           onClick={Add}

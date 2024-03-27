@@ -10,7 +10,8 @@ import { IoMdAdd, IoIosMore } from "react-icons/io";
 function Affiche() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const products = useSelector((data) => data.produits);
-  const total = useSelector((data) => data.produits.length);
+  console.log(products)
+ 
   const dispatch = useDispatch();
 
   const handleDelete = (id) => {
@@ -24,7 +25,15 @@ function Affiche() {
   const filteredProducts = selectedCategory
     ? products.filter((product) => product.categorie === selectedCategory)
     : products;
-
+    function formatDescription(description) {
+        const words = description.split(' ');
+        const chunkSize = 5;
+        let formattedDescription = '';
+        for (let i = 0; i < words.length; i += chunkSize) {
+          formattedDescription += words.slice(i, i + chunkSize).join(' ') + '\n';
+        }
+        return formattedDescription;
+      }
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
@@ -53,7 +62,7 @@ function Affiche() {
         </h5>
       </div>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto mb-9">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
@@ -76,8 +85,8 @@ function Affiche() {
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredProducts.map((el) => (
               <tr key={el.id}>
-                <td className="px-6 py-4 sm:py-2 whitespace-nowrap border-l-4 border-indigo-500">
-                  {el.nom}
+                <td className="px-5 py-4 sm:py-2 whitespace-nowrap border-l-4 border-indigo-500 flex gap-3 mt-3">
+                   <img src={el.img} className="w-[100px] border-2 rounded-9" alt={"image"} />{el.nom} 
                 </td>
                 <td className="px-6 py-4 sm:py-2 whitespace-nowrap bg-blue-50 ">
                   <pre className="flex">{el.prix}</pre>
@@ -89,7 +98,7 @@ function Affiche() {
                   {el.qt}
                 </td>
 
-                <td className="px-6 py-4 sm:py-2 whitespace-nowrap flex flex-col sm:flex-row gap-3">
+                <td className="px-4 py-4 sm:py-2 whitespace-nowrap flex flex-col  sm:flex-row gap-3 mt-[-5%] ">
                   <Link to={`/Modifier/${el.id}`}>
                     <button className="btn btn-info w-full sm:w-auto">
                       Modifier <LuPencil />
@@ -110,29 +119,26 @@ function Affiche() {
                   <dialog id={el.id} className="modal">
                     <div className="modal-box">
                       <h3 className="font-bold text-lg text-center text-blue-500 bg-blue-100">
-                        {el.nom}
+                        {el.nom} 
                       </h3>
                       <p className="py-4 flex flex-col gap-6">
+                        
                         <div>
-                          Date d'Achat :{" "}
-                          <span className="text-green-500">
-                            {el.date_achat}
-                          </span>{" "}
-                        </div>
-                        <div>
-                          Date d'Expiration :{" "}
-                          <span className="text-green-500">
-                            {el.date_expiration}
-                          </span>{" "}
-                        </div>
-                        <div>
-                          Le Fabriquant :{" "}
+                          <strong>Le Fabriquant :{" "}</strong>
                           <span className="text-green-500">{el.fabricant}</span>
                         </div>
                         <div>
-                          Ctégorie :{" "}
+                         <strong> Catégorie :{" "}</strong>
                           <span className="text-green-500">{el.categorie}</span>
                         </div>
+                        <div>
+  <strong>Description :</strong>
+  <div className="text-green-500 font-bold" style={{ whiteSpace: 'pre-line' }}>
+    {formatDescription(el.description)}
+  </div>
+</div>
+
+
                       </p>
                       <div className="modal-action">
                         <form method="dialog">

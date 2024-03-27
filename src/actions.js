@@ -11,9 +11,7 @@ export const  deleteproduct=(id)=>{
 export const filtrage=()=>{
     return {type:'filtre'}
 }
-export const categorie=(categ)=>{
-    return {type:'Categorie',payload:categ}
-}
+
 export const expiration=()=>{
     return {type:'expiration'}
 }
