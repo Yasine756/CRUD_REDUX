@@ -10,8 +10,7 @@ import { IoMdAdd, IoIosMore } from "react-icons/io";
 function Affiche() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const products = useSelector((data) => data.produits);
-  console.log(products)
- 
+
   const dispatch = useDispatch();
 
   const handleDelete = (id) => {
@@ -25,22 +24,24 @@ function Affiche() {
   const filteredProducts = selectedCategory
     ? products.filter((product) => product.categorie === selectedCategory)
     : products;
-    function formatDescription(description) {
-        const words = description.split(' ');
-        const chunkSize = 5;
-        let formattedDescription = '';
-        for (let i = 0; i < words.length; i += chunkSize) {
-          formattedDescription += words.slice(i, i + chunkSize).join(' ') + '\n';
-        }
-        return formattedDescription;
-      }
+
+  function formatDescription(description) {
+    const words = description.split(" ");
+    const chunkSize = 5;
+    let formattedDescription = "";
+    for (let i = 0; i < words.length; i += chunkSize) {
+      formattedDescription += words.slice(i, i + chunkSize).join(" ") + "\n";
+    }
+    return formattedDescription;
+  }
+
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
         <Link to="/Ajouter">
-          <button className=" text-purple-500 flex border-b-4 border-indigo-500 mb-9 gap-3 sm:mb-0">
+          <button className="text-purple-500 flex border-b-4 border-indigo-500 mb-3 sm:mb-0">
             Ajouter un Produit
-            <IoMdAdd />
+            <IoMdAdd className="ml-1" />
           </button>
         </Link>
         <select
@@ -70,7 +71,7 @@ function Affiche() {
                 Produit
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-black-500 uppercase tracking-wider">
-                <span className="flex">
+                <span className="flex items-center">
                   Prix(<FiDollarSign />)
                 </span>
               </th>
@@ -85,11 +86,17 @@ function Affiche() {
           <tbody className="bg-white divide-y divide-gray-200">
             {filteredProducts.map((el) => (
               <tr key={el.id}>
-                <td className="px-5 py-4 sm:py-2 whitespace-nowrap border-l-4 border-indigo-500 flex gap-3 mt-3">
-                   <img src={el.img} className="w-[100px] border-2 rounded-9" alt={"image"} />{el.nom} 
+                <td className="px-6 py-4 sm:py-2 whitespace-nowrap border-l-4 border-indigo-500 flex items-center mt-3">
+                  <img
+                    src={el.img}
+                    loading="lazy"
+                    className="w-12 h-12 sm:w-16 sm:h-16 border-2 rounded-full mr-3 sm:mr-4"
+                    alt={"image"}
+                  />
+                  <span className="hidden sm:block">{el.nom}</span>
                 </td>
-                <td className="px-6 py-4 sm:py-2 whitespace-nowrap bg-blue-50 ">
-                  <pre className="flex">{el.prix}</pre>
+                <td className="px-6 py-4 sm:py-2 whitespace-nowrap bg-blue-50">
+                  <pre>{el.prix}</pre>
                 </td>
                 <td
                   className="px-6 py-4 sm:py-2 whitespace-nowrap "
@@ -98,7 +105,7 @@ function Affiche() {
                   {el.qt}
                 </td>
 
-                <td className="px-4 py-4 sm:py-2 whitespace-nowrap flex flex-col  sm:flex-row gap-3 mt-[-5%] ">
+                <td className="px-4 py-4 sm:py-2 whitespace-nowrap flex flex-col sm:flex-row gap-3 mt-[-5%] ">
                   <Link to={`/Modifier/${el.id}`}>
                     <button className="btn btn-info w-full sm:w-auto">
                       Modifier <LuPencil />
@@ -119,26 +126,26 @@ function Affiche() {
                   <dialog id={el.id} className="modal">
                     <div className="modal-box">
                       <h3 className="font-bold text-lg text-center text-blue-500 bg-blue-100">
-                        {el.nom} 
+                        {el.nom}
                       </h3>
                       <p className="py-4 flex flex-col gap-6">
-                        
                         <div>
-                          <strong>Le Fabriquant :{" "}</strong>
+                          <strong>Le Fabriquant :</strong>
                           <span className="text-green-500">{el.fabricant}</span>
                         </div>
                         <div>
-                         <strong> Catégorie :{" "}</strong>
+                          <strong> Catégorie :</strong>
                           <span className="text-green-500">{el.categorie}</span>
                         </div>
                         <div>
-  <strong>Description :</strong>
-  <div className="text-green-500 font-bold" style={{ whiteSpace: 'pre-line' }}>
-    {formatDescription(el.description)}
-  </div>
-</div>
-
-
+                          <strong>Description :</strong>
+                          <div
+                            className="text-green-500 font-bold"
+                            style={{ whiteSpace: "pre-line" }}
+                          >
+                            {formatDescription(el.description)}
+                          </div>
+                        </div>
                       </p>
                       <div className="modal-action">
                         <form method="dialog">
